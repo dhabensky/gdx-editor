@@ -15,6 +15,14 @@ dependencies {
 	implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
 }
 
+java {
+	sourceSets {
+		main {
+			resources.srcDirs += rootProject.file("assets")
+		}
+	}
+}
+
 sourceCompatibility = 1.7
 
 ext.mainClassName = "com.dhabensky.editor.launcher.EditorLauncher"

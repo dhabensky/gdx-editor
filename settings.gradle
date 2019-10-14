@@ -1,1 +1,1 @@
-include 'app.desktop', 'app.android', 'app.ios', 'core', 'core-engine', 'core-editor'
+include 'core', 'core-engine', 'core-editor'
