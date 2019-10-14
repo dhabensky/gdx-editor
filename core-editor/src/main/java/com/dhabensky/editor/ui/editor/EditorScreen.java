@@ -1,12 +1,11 @@
-package com.dhabensky.editor.ui;
+package com.dhabensky.editor.ui.editor;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.Widget;
-import com.dhabensky.editor.ui.view.InspectorView;
-import com.dhabensky.editor.ui.view.SceneView;
+import com.dhabensky.editor.ui.BaseScreen;
 
 /**
  * @author dhabensky <dhabensky@yandex.ru>
@@ -24,13 +23,16 @@ public class EditorScreen extends BaseScreen {
 		InspectorView inspectorView = new InspectorView();
 		ScrollPane inspectorScroll = new ScrollPane(inspectorView, skin);
 
+		Label assetsView = new Label("Here will be assets", skin);
+		ScrollPane assetsPane = new ScrollPane(assetsView, skin);
+
 		root = new Table();
 		stage.setRoot(root);
 
 		root.add(new SceneView()).expand().fill();
 		root.add(inspectorScroll).width(192).expandY().fillY();
 		root.row();
-		root.add(new Widget()).colspan(2).height(100).expandX().fillX();
+		root.add(assetsPane).colspan(2).height(100).expandX().fillX();
 
 //		InputMultiplexer input = new InputMultiplexer();
 //		input.addProcessor(new DebugInputProcessor(stage));

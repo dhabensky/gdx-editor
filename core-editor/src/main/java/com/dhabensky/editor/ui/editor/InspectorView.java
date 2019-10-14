@@ -1,8 +1,9 @@
-package com.dhabensky.editor.ui.view;
+package com.dhabensky.editor.ui.editor;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.dhabensky.editor.ui.components.BackgroundComponent;
+import com.dhabensky.editor.ui.view.TransformView;
 
 /**
  * @author dhabensky <d.khabensky@a1-systems.com>

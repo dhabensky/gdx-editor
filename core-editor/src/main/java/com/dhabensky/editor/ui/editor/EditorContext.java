@@ -1,4 +1,4 @@
-package com.dhabensky.editor.ui;
+package com.dhabensky.editor.ui.editor;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;

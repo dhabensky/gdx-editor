@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.dhabensky.editor.ui.EditorContext;
+import com.dhabensky.editor.ui.editor.EditorContext;
 
 /**
  * @author dhabensky <d.khabensky@a1-systems.com>

@@ -1,7 +1,7 @@
 package com.dhabensky.editor.launcher;
 
 import com.badlogic.gdx.Game;
-import com.dhabensky.editor.ui.EditorScreen;
+import com.dhabensky.editor.ui.editor.EditorScreen;
 
 /**
  * @author dhabensky <d.khabensky@a1-systems.com>
