@@ -1,0 +1,62 @@
+
+vis/
+
+## Java
+
+*.class
+*.war
+*.ear
+hs_err_pid*
+
+## Robovm
+/app.ios/robovm-build/
+
+## GWT\
+/html/war/
+/html/gwt-unitCache/
+.apt_generated/
+.gwt/
+gwt-unitCache/
+www-test/
+.gwt-tmp/
+
+## Gradle
+
+/local.properties
+.gradle/
+gradle-app.setting
+build/
+dist/
+
+## Android Studio and Intellij and Android in general
+/app.android/src/main/jniLibs/
+/app.android/gen/
+.idea/
+*.ipr
+*.iws
+*.iml
+/app.android/out/
+com_crashlytics_export_strings.xml
+
+## NetBeans
+
+nbbuild/
+nbdist/
+nbproject/private/
+nbactions.xml
+nb-configuration.xml
+
+## OS Specific
+.DS_Store
+Thumbs.db
+
+## iOS
+/app.ios/xcode/*.xcodeproj/*
+!/app.ios/xcode/*.xcodeproj/xcshareddata
+!/app.ios/xcode/*.xcodeproj/project.pbxproj
+/app.ios/xcode/native/
+
+/app.ios-moe/xcode/*.xcodeproj/*
+!/app.ios-moe/xcode/*.xcodeproj/xcshareddata
+!/app.ios-moe/xcode/*.xcodeproj/project.pbxproj
+/app.ios-moe/xcode/native/

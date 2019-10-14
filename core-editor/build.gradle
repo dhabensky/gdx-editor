@@ -1,0 +1,49 @@
+apply plugin: "java"
+
+dependencies {
+	implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+	implementation "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+	implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+	implementation "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
+
+	implementation 'com.google.code.gson:gson:2.8.5'
+	implementation 'com.google.code.findbugs:jsr305:3.0.2'
+
+	implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+	implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+	implementation "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
+	implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+}
+
+sourceCompatibility = 1.7
+
+ext.mainClassName = "com.dhabensky.editor.launcher.EditorLauncher"
+
+task run(dependsOn: classes, type: JavaExec) {
+	main = project.mainClassName
+	classpath = sourceSets.main.runtimeClasspath
+	standardInput = System.in
+	workingDir = project.generatedAssetsDir
+	ignoreExitValue = true
+}
+
+task debug(dependsOn: classes, type: JavaExec) {
+	main = project.mainClassName
+	classpath = sourceSets.main.runtimeClasspath
+	standardInput = System.in
+	workingDir = project.generatedAssetsDir
+	ignoreExitValue = true
+	debug = true
+}
+
+task dist(dependsOn: classes, type: Jar) {
+	from files(sourceSets.main.output.getClassesDirs())
+	from files(sourceSets.main.output.resourcesDir)
+	from { configurations.compile.collect { zipTree(it) } }
+	from files(project.generatedAssetsDir)
+
+	manifest {
+		attributes 'Main-Class': project.mainClassName
+	}
+}
+
