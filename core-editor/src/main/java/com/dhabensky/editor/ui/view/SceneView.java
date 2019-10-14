@@ -58,6 +58,7 @@ public class SceneView extends Widget {
 		}
 
 		batch.setProjectionMatrix(camera.combined);
+		batch.setColor(Color.WHITE);
 		batch.draw(texture, 20, 20);
 
 		batch.setProjectionMatrix(savedMatrix);

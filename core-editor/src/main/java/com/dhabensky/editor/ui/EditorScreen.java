@@ -1,6 +1,7 @@
 package com.dhabensky.editor.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
@@ -21,12 +22,13 @@ public class EditorScreen extends BaseScreen {
 		Skin skin = EditorContext.skin;
 
 		InspectorView inspectorView = new InspectorView();
+		ScrollPane inspectorScroll = new ScrollPane(inspectorView, skin);
 
 		root = new Table();
 		stage.setRoot(root);
 
 		root.add(new SceneView()).expand().fill();
-		root.add(inspectorView).width(192).expandY().fillY();
+		root.add(inspectorScroll).width(192).expandY().fillY();
 		root.row();
 		root.add(new Widget()).colspan(2).height(100).expandX().fillX();
 

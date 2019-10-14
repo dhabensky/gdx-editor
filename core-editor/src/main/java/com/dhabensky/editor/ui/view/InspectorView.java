@@ -1,7 +1,6 @@
 package com.dhabensky.editor.ui.view;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.dhabensky.editor.ui.components.BackgroundComponent;
 
@@ -16,11 +15,11 @@ public class InspectorView extends VerticalGroup {
 		addActor(new TransformView());
 	}
 
-	@Override
-	public void draw(Batch batch, float parentAlpha) {
-		validate();
-		background.draw(batch, parentAlpha);
-		super.draw(batch, parentAlpha);
-	}
+//	@Override
+//	public void draw(Batch batch, float parentAlpha) {
+//		validate();
+//		background.draw(batch, parentAlpha);
+//		super.draw(batch, parentAlpha);
+//	}
 
 }
