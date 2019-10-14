@@ -1,7 +1,7 @@
 package com.dhabensky.editor.ui;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.dhabensky.editor.ui.view.InspectorView;
@@ -18,23 +18,30 @@ public class EditorScreen extends BaseScreen {
 	public void show() {
 		super.show();
 
-		Widget sceneView = new SceneView();
-		Actor inspectorView = new InspectorView();
+		Skin skin = EditorContext.skin;
+
+		InspectorView inspectorView = new InspectorView();
 
 		root = new Table();
-		root.setFillParent(true);
 		stage.setRoot(root);
-		root.add(sceneView).expand().fill();
+
+		root.add(new SceneView()).expand().fill();
 		root.add(inspectorView).width(192).expandY().fillY();
 		root.row();
 		root.add(new Widget()).colspan(2).height(100).expandX().fillX();
-		root.debug();
+
+//		InputMultiplexer input = new InputMultiplexer();
+//		input.addProcessor(new DebugInputProcessor(stage));
+//		input.addProcessor(stage);
+//		Gdx.input.setInputProcessor(input);
+
+		Gdx.input.setInputProcessor(stage);
 	}
 
 	@Override
 	public void resize(int width, int height) {
 		super.resize(width, height);
-		root.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		root.setSize(stage.getWidth(), stage.getHeight());
 	}
 
 }

@@ -5,7 +5,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
  * @author dhabensky <dhabensky@yandex.ru>
@@ -13,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 public class BaseScreen implements Screen {
 
 	protected OrthographicCamera camera;
+	protected Viewport viewport;
 	protected Stage stage;
 
 	protected boolean wasCreated() {
@@ -21,8 +23,8 @@ public class BaseScreen implements Screen {
 
 	protected void create() {
 		camera = new OrthographicCamera();
-		stage = new Stage();
-		stage.getViewport().setCamera(camera);
+		viewport = new ScreenViewport(camera);
+		stage = new Stage(viewport);
 	}
 
 	@Override
@@ -43,7 +45,7 @@ public class BaseScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		stage.getViewport().update(width, height, true);
 	}
 
 	@Override
