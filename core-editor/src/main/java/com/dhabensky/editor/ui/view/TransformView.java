@@ -32,23 +32,12 @@ public class TransformView extends Table implements Observer<Entity> {
 		add(new Label("y", skin));
 		add(posY).width(100);
 
-		TextField.TextFieldFilter filter = new TextField.TextFieldFilter() {
-			@Override
-			public boolean acceptChar(TextField textField, char c) {
-				if (Character.isDigit(c)) {
-					return true;
-				}
-				if (c == '.') {
-					return !textField.getText().contains(".");
-				}
-				return false;
-			}
-		};
+		TextField.TextFieldFilter filter = new FloatFieldFilter();
 		posX.setTextFieldFilter(filter);
 		posY.setTextFieldFilter(filter);
 
-		posX.setTextFieldListener(new ModelUpdater(ModelUpdater.FIELD_POS_X));
-		posY.setTextFieldListener(new ModelUpdater(ModelUpdater.FIELD_POS_Y));
+		posX.setTextFieldListener(new FloatFieldUpdater(FloatFieldUpdater.FIELD_POS_X));
+		posY.setTextFieldListener(new FloatFieldUpdater(FloatFieldUpdater.FIELD_POS_Y));
 	}
 
 	@Override
@@ -65,12 +54,25 @@ public class TransformView extends Table implements Observer<Entity> {
 		posY.setText(String.valueOf(transform.getY()));
 	}
 
-	private class ModelUpdater implements TextField.TextFieldListener {
+	private static class FloatFieldFilter implements TextField.TextFieldFilter {
+		@Override
+		public boolean acceptChar(TextField textField, char c) {
+			if (Character.isDigit(c)) {
+				return true;
+			}
+			if (c == '.') {
+				return !textField.getText().contains(".");
+			}
+			return false;
+		}
+	}
+
+	private class FloatFieldUpdater implements TextField.TextFieldListener {
 
 		public static final int FIELD_POS_X = 0;
 		public static final int FIELD_POS_Y = 1;
 
-		public ModelUpdater(int modelField) {
+		public FloatFieldUpdater(int modelField) {
 			this.modelField = modelField;
 		}
 		private int modelField;
@@ -78,13 +80,16 @@ public class TransformView extends Table implements Observer<Entity> {
 		@Override
 		public void keyTyped(TextField textField, char c) {
 			try {
-				float value = Float.parseFloat(textField.getText());
+				float value = 0f;
+				String text = textField.getText();
+				if (!text.isEmpty() && !".".equals(text)) {
+					value = Float.parseFloat(textField.getText());
+				}
 				updateModel(value);
 			}
 			catch (NumberFormatException e) {
 				// how can it be ?!
 			}
-			System.out.println(c);
 		}
 
 		private void updateModel(float value) {
