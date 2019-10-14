@@ -1,26 +1,28 @@
 package com.dhabensky.editor.ui.editor;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
-import com.dhabensky.editor.ui.components.BackgroundComponent;
+import com.dhabensky.editor.Entity;
 import com.dhabensky.editor.ui.view.TransformView;
+import com.dhabensky.editor.util.Observer;
 
 /**
  * @author dhabensky <d.khabensky@a1-systems.com>
  */
-public class InspectorView extends VerticalGroup {
+public class InspectorView extends VerticalGroup implements Observer<Entity> {
 
-	private BackgroundComponent background = new BackgroundComponent(this, Color.GOLDENROD);
+	private final TransformView transformView = new TransformView(EditorContext.skin);
 
 	{
-		addActor(new TransformView());
+		addActor(transformView);
 	}
 
-//	@Override
-//	public void draw(Batch batch, float parentAlpha) {
-//		validate();
-//		background.draw(batch, parentAlpha);
-//		super.draw(batch, parentAlpha);
-//	}
+	public TransformView getTransformView() {
+		return transformView;
+	}
+
+	@Override
+	public void onUpdate(Entity value) {
+		transformView.onUpdate(value);
+	}
 
 }

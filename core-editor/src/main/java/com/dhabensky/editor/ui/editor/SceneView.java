@@ -7,6 +7,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
+import com.dhabensky.editor.Entity;
+import com.dhabensky.editor.Scene;
+import com.dhabensky.editor.Transform;
 import com.dhabensky.editor.ui.components.BackgroundComponent;
 
 /**
@@ -21,9 +24,20 @@ public class SceneView extends Widget {
 	private Matrix4            savedMatrix = new Matrix4();
 	private boolean            cameraDirty = true;
 
+	private Scene scene;
+
 
 	public SceneView() {
 		createCamera();
+	}
+
+
+	public void setScene(Scene scene) {
+		this.scene = scene;
+	}
+
+	public Scene getScene() {
+		return scene;
 	}
 
 
@@ -50,6 +64,10 @@ public class SceneView extends Widget {
 //		Gdx.app.log("scene_view", getX() + " " + getY() + " " + getWidth() + " " + getHeight());
 		background.draw(batch, parentAlpha);
 
+		if (scene == null) {
+			return;
+		}
+
 		savedMatrix.set(batch.getProjectionMatrix());
 
 		if (cameraDirty) {
@@ -59,7 +77,11 @@ public class SceneView extends Widget {
 
 		batch.setProjectionMatrix(camera.combined);
 		batch.setColor(Color.WHITE);
-		batch.draw(texture, 20, 20);
+
+		for (Entity e : scene.getObjects()) {
+			Transform t = e.getTransform();
+			batch.draw(texture, t.getX(), t.getY());
+		}
 
 		batch.setProjectionMatrix(savedMatrix);
 	}

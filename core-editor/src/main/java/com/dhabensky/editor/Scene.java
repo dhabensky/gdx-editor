@@ -32,15 +32,15 @@ public class Scene {
 		return list.get(0);
 	}
 
-	public void add(@Nonnull Entity gameObject, @Nullable String tag) {
-		objects.add(gameObject);
+	public void add(@Nonnull Entity entity, @Nullable String tag) {
+		objects.add(entity);
 		if (tag != null) {
 			List<Entity> objectsForTag = tagMap.get(tag);
 			if (objectsForTag == null) {
 				objectsForTag = new ArrayList<>();
 				tagMap.put(tag, objectsForTag);
 			}
-			objectsForTag.add(gameObject);
+			objectsForTag.add(entity);
 		}
 	}
 
