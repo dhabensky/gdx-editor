@@ -1,22 +1,5 @@
 buildscript {
 
-	repositories {
-		mavenLocal()
-		jcenter()
-		google()
-	}
-
-	dependencies {
-		classpath 'com.android.tools.build:gradle:3.4.2'
-		classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.3'
-//		classpath "com.dhabensky:gdx-asset-index:0.1.+"
-		classpath files('gdx-asset-index-0.1.1.jar')
-	}
-}
-
-allprojects {
-	version = '1.0'
-
 	ext {
 		appName = "dash-n-hide"
 		packageName = 'com.idp.dnh'
@@ -30,6 +13,22 @@ allprojects {
 		ashleyVersion = '1.7.0'
 		aiVersion = '1.8.0'
 	}
+
+	repositories {
+		mavenLocal()
+		jcenter()
+		google()
+	}
+
+	dependencies {
+		classpath 'com.android.tools.build:gradle:3.4.2'
+		classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.3'
+		classpath "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
+	}
+}
+
+allprojects {
+	version = '1.0'
 
 	repositories {
 		mavenLocal()

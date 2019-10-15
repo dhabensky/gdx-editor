@@ -51,7 +51,7 @@ public class EditorScreen extends BaseScreen {
 	private void createViews() {
 		Skin skin = EditorContext.skin;
 
-		sceneView     = new SceneView();
+		sceneView     = new SceneView(skin);
 		inspectorView = new InspectorView();
 
 		root = new Table();

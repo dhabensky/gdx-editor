@@ -5,7 +5,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.dhabensky.editor.Entity;
 import com.dhabensky.editor.Scene;
@@ -17,18 +19,23 @@ import com.dhabensky.editor.ui.components.BackgroundComponent;
  */
 public class SceneView extends Widget {
 
-	private BackgroundComponent background = new BackgroundComponent(this, Color.BLACK);
-
 	private OrthographicCamera camera;
-	private Texture            texture;
 	private Matrix4            savedMatrix = new Matrix4();
 	private boolean            cameraDirty = true;
+	private Scene              scene;
 
-	private Scene scene;
+	private BackgroundComponent background = new BackgroundComponent(this, Color.BLACK);
+	private Texture             texture;
+	private NinePatch           arrow;
 
 
-	public SceneView() {
-		createCamera();
+	public SceneView(Skin skin) {
+		camera = new OrthographicCamera();
+		texture = new Texture("badlogic.jpg");
+
+		arrow = skin.getPatch("arrow-red");
+//		arrow.setOrigin(2f / 16f, 4.5f / 8f);
+//		arrow.setScale(16f, 16f);
 	}
 
 
@@ -40,11 +47,6 @@ public class SceneView extends Widget {
 		return scene;
 	}
 
-
-	private void createCamera() {
-		camera = new OrthographicCamera();
-		texture = new Texture("badlogic.jpg");
-	}
 
 	@Override
 	protected void sizeChanged() {
@@ -61,7 +63,6 @@ public class SceneView extends Widget {
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 
-//		Gdx.app.log("scene_view", getX() + " " + getY() + " " + getWidth() + " " + getHeight());
 		background.draw(batch, parentAlpha);
 
 		if (scene == null) {
@@ -81,6 +82,7 @@ public class SceneView extends Widget {
 		for (Entity e : scene.getObjects()) {
 			Transform t = e.getTransform();
 			batch.draw(texture, t.getX(), t.getY());
+			arrow.draw(batch, t.getX(), t.getY(), 100, 100);
 		}
 
 		batch.setProjectionMatrix(savedMatrix);

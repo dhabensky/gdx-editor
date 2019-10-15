@@ -4,6 +4,14 @@ size: 256,128
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
+arrow-red
+  rotate: false
+  xy: 29, 22
+  size: 10, 6
+  split: 2, 5, 0, 5
+  orig: 10, 6
+  offset: 0, 0
+  index: -1
 check-off
   rotate: false
   xy: 11, 5
@@ -59,7 +67,7 @@ default-rect-pad
   index: -1
 default-pane-noborder
   rotate: false
-  xy: 170, 44
+  xy: 29, 20
   size: 1, 1
   split: 0, 0, 0, 0
   orig: 1, 1
@@ -67,7 +75,7 @@ default-pane-noborder
   index: -1
 default-rect
   rotate: false
-  xy: 38, 25
+  xy: 170, 37
   size: 3, 3
   split: 1, 1, 1, 1
   orig: 3, 3
@@ -75,7 +83,7 @@ default-rect
   index: -1
 default-rect-down
   rotate: false
-  xy: 170, 46
+  xy: 40, 25
   size: 3, 3
   split: 1, 1, 1, 1
   orig: 3, 3
@@ -125,7 +133,7 @@ default-select
   index: -1
 default-select-selection
   rotate: false
-  xy: 26, 16
+  xy: 179, 46
   size: 3, 3
   split: 1, 1, 1, 1
   orig: 3, 3
@@ -133,7 +141,7 @@ default-select-selection
   index: -1
 default-slider
   rotate: false
-  xy: 29, 20
+  xy: 170, 41
   size: 8, 8
   split: 2, 2, 2, 2
   orig: 8, 8
@@ -172,7 +180,7 @@ default-window
   index: -1
 selection
   rotate: false
-  xy: 174, 48
+  xy: 26, 18
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
@@ -198,4 +206,3 @@ white
   orig: 3, 3
   offset: 0, 0
   index: -1
-
