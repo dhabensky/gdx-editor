@@ -63,6 +63,9 @@ public class TransformView extends Table implements Observer<Entity> {
 			if (c == '.') {
 				return !textField.getText().contains(".");
 			}
+			if (c == '-') {
+				return textField.getCursorPosition() == 0 && !textField.getText().contains("-");
+			}
 			return false;
 		}
 	}
