@@ -7,8 +7,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.dhabensky.editor.EditorModel;
 import com.dhabensky.editor.Entity;
 import com.dhabensky.editor.Transform;
@@ -22,6 +26,7 @@ public class SceneView extends Widget {
 	private OrthographicCamera camera;
 	private Matrix4            savedMatrix = new Matrix4();
 	private boolean            cameraDirty = true;
+	private Vector3            tmpVec3     = new Vector3();
 	private EditorModel        model;
 
 	private BackgroundComponent background = new BackgroundComponent(this, Color.BLACK);
@@ -34,11 +39,24 @@ public class SceneView extends Widget {
 		camera.up.set(0, 1, 0);
 		camera.direction.set(0, 0, -1);
 		camera.position.set(0, 1, 0);
-		camera.zoom = 0.01f;
+
+		float pixelsPerUnit = 100;
+		camera.zoom = 1f / pixelsPerUnit;
 
 		texture = new Texture("badlogic.jpg");
 
 		arrow = skin.getPatch("arrow-red");
+
+		this.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				Vector2 v = new Vector2(x, y);
+				localToWorld(v);
+				Gdx.app.log("SceneView", String.format("local: %.1f, %.1f | world: %.1f, %.1f", x, y, v.x, v.y));
+				worldToLocal(v);
+				Gdx.app.log("SceneView", String.format("local: %.1f, %.1f", v.x, v.y));
+			}
+		});
 	}
 
 
@@ -72,13 +90,21 @@ public class SceneView extends Widget {
 			return;
 		}
 
-		savedMatrix.set(batch.getProjectionMatrix());
-
 		if (cameraDirty) {
 			updateCamera();
 			cameraDirty = false;
 		}
 
+		savedMatrix.set(batch.getProjectionMatrix());
+		if (clipBegin()) {
+			drawScene(batch);
+			batch.flush();  // flush before we pop scissors
+			clipEnd();
+		}
+		batch.setProjectionMatrix(savedMatrix);
+	}
+
+	private void drawScene(Batch batch) {
 		batch.setProjectionMatrix(camera.combined);
 		batch.setColor(Color.WHITE);
 
@@ -90,10 +116,23 @@ public class SceneView extends Widget {
 		Entity selected = model.selectedEntity.getValue();
 		if (selected != null) {
 			Transform t = selected.getTransform();
-			arrow.draw(batch, t.getX(), (t.getY()), 12, 5);
+			arrow.draw(batch, t.getX(), (t.getY()), 200 * camera.zoom, 500 * camera.zoom);
 		}
+	}
 
-		batch.setProjectionMatrix(savedMatrix);
+	private void localToWorld(Vector2 local) {
+		localToScreenCoordinates(local);
+		tmpVec3.set(local.x, local.y, 0);
+		camera.unproject(tmpVec3);
+		local.set(tmpVec3.x, tmpVec3.y);
+	}
+
+	private void worldToLocal(Vector2 world) {
+		tmpVec3.set(world.x, world.y, 0);
+		camera.project(tmpVec3);
+		world.set(tmpVec3.x, tmpVec3.y);
+		stageToLocalCoordinates(world);
+		world.y += 1;  // who knows why, but... seems its needed
 	}
 
 	private void updateCamera() {
