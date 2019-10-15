@@ -40,4 +40,12 @@ public class BaseObservable<T> implements Observable<T> {
 		}
 	}
 
+	@Override
+	public T getValue() {
+		if (value == NO_VALUE) {
+			return null;
+		}
+		return (T) value;
+	}
+
 }

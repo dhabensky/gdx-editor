@@ -6,10 +6,10 @@ filter: Linear,Linear
 repeat: none
 arrow-red
   rotate: false
-  xy: 29, 22
-  size: 10, 6
-  split: 2, 5, 0, 5
-  orig: 10, 6
+  xy: 26, 14
+  size: 5, 5
+  split: 0, 4, 0, 5
+  orig: 5, 5
   offset: 0, 0
   index: -1
 check-off
@@ -67,7 +67,7 @@ default-rect-pad
   index: -1
 default-pane-noborder
   rotate: false
-  xy: 29, 20
+  xy: 129, 33
   size: 1, 1
   split: 0, 0, 0, 0
   orig: 1, 1
@@ -75,7 +75,7 @@ default-pane-noborder
   index: -1
 default-rect
   rotate: false
-  xy: 170, 37
+  xy: 38, 25
   size: 3, 3
   split: 1, 1, 1, 1
   orig: 3, 3
@@ -83,7 +83,7 @@ default-rect
   index: -1
 default-rect-down
   rotate: false
-  xy: 40, 25
+  xy: 170, 46
   size: 3, 3
   split: 1, 1, 1, 1
   orig: 3, 3
@@ -133,7 +133,7 @@ default-select
   index: -1
 default-select-selection
   rotate: false
-  xy: 179, 46
+  xy: 32, 16
   size: 3, 3
   split: 1, 1, 1, 1
   orig: 3, 3
@@ -141,7 +141,7 @@ default-select-selection
   index: -1
 default-slider
   rotate: false
-  xy: 170, 41
+  xy: 29, 20
   size: 8, 8
   split: 2, 2, 2, 2
   orig: 8, 8
@@ -180,7 +180,7 @@ default-window
   index: -1
 selection
   rotate: false
-  xy: 26, 18
+  xy: 170, 44
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
@@ -201,7 +201,7 @@ tree-plus
   index: -1
 white
   rotate: false
-  xy: 129, 31
+  xy: 26, 10
   size: 3, 3
   orig: 3, 3
   offset: 0, 0

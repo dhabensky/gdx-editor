@@ -8,9 +8,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.dhabensky.editor.EditorModel;
 import com.dhabensky.editor.Entity;
 import com.dhabensky.editor.Scene;
-import com.dhabensky.editor.Transform;
 import com.dhabensky.editor.ui.BaseScreen;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -31,7 +32,7 @@ public class EditorScreen extends BaseScreen {
 		createViews();
 		createModel();
 
-		sceneView.setScene(model.getScene());
+		sceneView.setSceneModel(model);
 		model.selectedEntity.observe(inspectorView);
 
 //		InputMultiplexer input = new InputMultiplexer();
@@ -64,17 +65,32 @@ public class EditorScreen extends BaseScreen {
 	}
 
 	private void createModel() {
-		Entity e = new Entity(UUID.randomUUID());
-		Transform t = new Transform();
-		t.setPosition(20, 50);
-		e.setTransform(t);
+
+		float[] positions = new float[] {
+				0,0,
+				1,2,
+				2,1,
+				4,0,
+				1,-2,
+				-1,-2,
+				-2,1
+		};
+
+		List<Entity> entities = new ArrayList<>();
+		for (int i = 0; i < positions.length; ) {
+			Entity e = new Entity(UUID.randomUUID());
+			e.getTransform().setPosition(positions[i++], positions[i++]);
+			entities.add(e);
+		}
 
 		Scene scene = new Scene();
-		scene.add(e, null);
+		for (Entity e : entities) {
+			scene.add(e, null);
+		}
 
 		model = new EditorModel();
 		model.setScene(scene);
-		model.selectedEntity.setValue(e);
+//		model.selectedEntity.setValue(entities.get(0));
 	}
 
 }

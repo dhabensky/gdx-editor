@@ -11,4 +11,6 @@ public interface Observable<T> {
 
 	void setValue(T value);
 
+	T getValue();
+
 }
