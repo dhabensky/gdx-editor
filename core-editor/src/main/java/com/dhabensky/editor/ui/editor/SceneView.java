@@ -34,6 +34,7 @@ public class SceneView extends Widget {
 	private Texture             texture;
 	private Sprite              arrow;
 
+	private float zoomPower = 1.25f;
 
 	public SceneView(Skin skin) {
 		camera = new OrthographicCamera();
@@ -47,7 +48,7 @@ public class SceneView extends Widget {
 		texture = new Texture("badlogic.jpg");
 
 		arrow = new Sprite(new Texture("axis-arrows.png"));
-		arrow.setOrigin(91f / 512f * arrow.getWidth(), 90f / 512f * arrow.getHeight());
+		arrow.setOrigin(99f / 512f * arrow.getWidth(), 98f / 512f * arrow.getHeight());
 		arrow.setScale(200f / arrow.getWidth());
 
 		this.addListener(new ClickListener() {
@@ -69,6 +70,16 @@ public class SceneView extends Widget {
 		return model;
 	}
 
+	public void zoom(int amount) {
+		if (amount > 0) {
+			camera.zoom *= zoomPower;
+			cameraDirty = true;
+		}
+		else if (amount < 0) {
+			camera.zoom /= zoomPower;
+			cameraDirty = true;
+		}
+	}
 
 	@Override
 	protected void sizeChanged() {

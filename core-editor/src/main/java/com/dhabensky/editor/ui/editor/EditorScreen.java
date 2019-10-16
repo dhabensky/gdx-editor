@@ -32,6 +32,9 @@ public class EditorScreen extends BaseScreen {
 		createViews();
 		createModel();
 
+		ZoomTool zoomTool = new ZoomTool();
+		zoomTool.setSceneView(sceneView);
+
 		sceneView.setSceneModel(model);
 		model.selectedEntity.observe(inspectorView);
 
@@ -41,6 +44,8 @@ public class EditorScreen extends BaseScreen {
 //		Gdx.input.setInputProcessor(input);
 
 		Gdx.input.setInputProcessor(stage);
+
+		stage.addListener(zoomTool);
 	}
 
 	@Override
