@@ -1,6 +1,7 @@
 package com.dhabensky.editor.ui.editor;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -48,8 +49,8 @@ public class EditorScreen extends BaseScreen {
 
 		Gdx.input.setInputProcessor(stage);
 
-		stage.addListener(zoomTool);
-		stage.addListener(panTool);
+		sceneView.addListener(zoomTool);
+		sceneView.addListener(panTool);
 	}
 
 	@Override
@@ -62,15 +63,23 @@ public class EditorScreen extends BaseScreen {
 		Skin skin = EditorContext.skin;
 
 		sceneView     = new SceneView(skin);
+		sceneView.addListener(new HoverScroll(sceneView));
+
 		inspectorView = new InspectorView();
 
 		root = new Table();
 		stage.setRoot(root);
 
 		root.add(sceneView).expand().fill();
-		root.add(new ScrollPane(inspectorView, skin)).width(192).expandY().fillY();
+		root.add(wrapInScroll(inspectorView, skin)).width(192).expandY().fillY();
 		root.row();
-		root.add(new ScrollPane(new Label("Here will be assets", skin), skin)).colspan(2).height(100).expandX().fillX();
+		root.add(wrapInScroll(new Label("Here will be assets", skin), skin)).colspan(2).height(100).expandX().fillX();
+	}
+
+	private ScrollPane wrapInScroll(Actor actor, Skin skin) {
+		ScrollPane scroll = new ScrollPane(actor, skin);
+		scroll.addListener(new HoverScroll(scroll));
+		return scroll;
 	}
 
 	private void createModel() {

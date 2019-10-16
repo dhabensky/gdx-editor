@@ -1,6 +1,5 @@
 package com.dhabensky.editor.ui.editor;
 
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 
@@ -10,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 public class ZoomTool extends InputListener {
 
 	private SceneView sceneView;
-	private Vector2 tmp = new Vector2();
 
 	public void setSceneView(SceneView sceneView) {
 		this.sceneView = sceneView;
@@ -32,9 +30,7 @@ public class ZoomTool extends InputListener {
 			return false;
 		}
 
-		tmp.set(x, y);
-		sceneView.stageToLocalCoordinates(tmp);
-		sceneView.zoom(amount, tmp.x, tmp.y);
+		sceneView.zoom(amount, x, y);
 
 		return true;
 	}
