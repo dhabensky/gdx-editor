@@ -91,6 +91,16 @@ public class SceneView extends Widget {
 		cameraDirty = true;
 	}
 
+	public void pan(float dx, float dy) {
+
+		dx *= camera.zoom;
+		dy *= camera.zoom;
+
+		camera.position.x -= dx;
+		camera.position.y -= dy;
+		cameraDirty = true;
+	}
+
 	@Override
 	protected void sizeChanged() {
 		super.sizeChanged();
