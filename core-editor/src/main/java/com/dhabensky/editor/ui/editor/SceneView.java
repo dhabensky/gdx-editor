@@ -70,15 +70,25 @@ public class SceneView extends Widget {
 		return model;
 	}
 
-	public void zoom(int amount) {
+	public void zoom(int amount, float x, float y) {
+		float scale;
 		if (amount > 0) {
-			camera.zoom *= zoomPower;
-			cameraDirty = true;
+			scale = zoomPower;
 		}
 		else if (amount < 0) {
-			camera.zoom /= zoomPower;
-			cameraDirty = true;
+			scale = 1f / zoomPower;
 		}
+		else {
+			return;
+		}
+
+		float dx = (x - getWidth()  / 2) * camera.zoom;
+		float dy = (y - getHeight() / 2) * camera.zoom;
+
+		camera.position.x += (1 - scale) * dx;
+		camera.position.y += (1 - scale) * dy;
+		camera.zoom *= scale;
+		cameraDirty = true;
 	}
 
 	@Override
