@@ -90,7 +90,7 @@ public class EditorScreen extends BaseScreen {
 
 		model = new EditorModel();
 		model.setScene(scene);
-//		model.selectedEntity.setValue(entities.get(0));
+		model.selectedEntity.setValue(entities.get(0));
 	}
 
 }
