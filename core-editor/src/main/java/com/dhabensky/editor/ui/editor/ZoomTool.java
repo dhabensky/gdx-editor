@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 public class ZoomTool extends InputListener {
 
 	private SceneView sceneView;
+	private float zoomPower = 1.25f;
 
 	public void setSceneView(SceneView sceneView) {
 		this.sceneView = sceneView;
@@ -30,7 +31,12 @@ public class ZoomTool extends InputListener {
 			return false;
 		}
 
-		sceneView.zoom(amount, x, y);
+		if (amount > 0) {
+			sceneView.zoom(zoomPower, x, y);
+		}
+		else if (amount < 0) {
+			sceneView.zoom(1f / zoomPower, x, y);
+		}
 
 		return true;
 	}
