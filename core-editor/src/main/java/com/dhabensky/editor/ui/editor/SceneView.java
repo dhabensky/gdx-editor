@@ -147,7 +147,29 @@ public class SceneView extends Widget {
 		float wMaxX = tmpVec2.x;
 		float wMaxY = tmpVec2.y;
 
-		float wx = (float) Math.ceil(wMinX);
+		float step = 1f;
+		float zoom = getZoom();
+
+		float threshold = 0.005f;
+		while (zoom > threshold) {
+			threshold *= 5;
+			if (zoom > threshold) {
+				step *= 5;
+			}
+			else {
+				threshold /= 5;
+			}
+
+			threshold *= 2;
+			if (zoom > threshold) {
+				step *= 2;
+			}
+			else {
+				break;
+			}
+		}
+
+		float wx = leastBoundStepped(wMinX, step);
 		float wXlimit = (float) Math.ceil(wMaxX);
 		while (wx < wXlimit) {
 
@@ -157,10 +179,10 @@ public class SceneView extends Widget {
 			batch.setColor(Color.LIGHT_GRAY);
 			batch.draw(gridTexture, tmpVec2.x, getY(), 1f, getHeight());
 
-			wx += 1f;
+			wx += step;
 		}
 
-		float wy = (float) Math.ceil(wMinY);
+		float wy = leastBoundStepped(wMinY, step);
 		float wYlimit = (float) Math.ceil(wMaxY);
 		while (wy < wYlimit) {
 
@@ -170,9 +192,12 @@ public class SceneView extends Widget {
 			batch.setColor(Color.LIGHT_GRAY);
 			batch.draw(gridTexture, getX(), tmpVec2.y, getWidth(), 1);
 
-			wy += 1f;
+			wy += step;
 		}
 	}
 
+	private float leastBoundStepped(float least, float step) {
+		return (float) (Math.ceil(least / step) * step);
+	}
 
 }

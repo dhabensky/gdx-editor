@@ -12,8 +12,8 @@ public class ZoomTool extends InputListener {
 
 	private SceneView sceneView;
 	private float     zoomPower = 1.25f;
-	private float     minZoom   = 1e-6f;
-	private float     maxZoom   = 1e+2f;
+	private float     minZoom   = 1e-3f;
+	private float     maxZoom   = 1e+4f;
 
 	public void setSceneView(SceneView sceneView) {
 		this.sceneView = sceneView;
