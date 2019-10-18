@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
@@ -23,12 +22,9 @@ import com.dhabensky.editor.ui.components.BackgroundComponent;
  */
 public class SceneView extends Widget {
 
-	private OrthographicCamera camera;
-	private Matrix4            savedMatrix = new Matrix4();
-	private boolean            cameraDirty = true;
-	private Vector3            tmpVec3     = new Vector3();
-	private Vector2            tmpVec2     = new Vector2();
-	private EditorModel        model;
+	private Matrix4     savedMatrix = new Matrix4();
+	private Vector2     tmpVec2     = new Vector2();
+	private EditorModel model;
 
 	private BackgroundComponent background = new BackgroundComponent(this, Color.CHARTREUSE);
 	private Texture             texture;
@@ -36,8 +32,11 @@ public class SceneView extends Widget {
 
 	private float zoomPower = 1.25f;
 
+	private CameraHelper helper;
+
 	public SceneView(Skin skin) {
-		camera = new OrthographicCamera();
+		helper = new CameraHelper(this);
+		OrthographicCamera camera = helper.getCamera();
 		camera.up.set(0, 1, 0);
 		camera.direction.set(0, 0, -1);
 		camera.position.set(0, 0, 0);
@@ -55,7 +54,7 @@ public class SceneView extends Widget {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				Vector2 v = new Vector2(x, y);
-				localToWorld(v);
+				helper.localToWorld(v);
 				Gdx.app.log("SceneView", String.format("local: %.1f, %.1f | world: %.1f, %.1f", x, y, v.x, v.y));
 			}
 		});
@@ -71,46 +70,28 @@ public class SceneView extends Widget {
 	}
 
 	public void zoom(int amount, float x, float y) {
-		float scale;
 		if (amount > 0) {
-			scale = zoomPower;
+			helper.zoom(zoomPower, x, y);
 		}
 		else if (amount < 0) {
-			scale = 1f / zoomPower;
+			helper.zoom(1f / zoomPower, x, y);
 		}
-		else {
-			return;
-		}
-
-		float dx = (x - getWidth()  / 2) * camera.zoom;
-		float dy = (y - getHeight() / 2) * camera.zoom;
-
-		camera.position.x += (1 - scale) * dx;
-		camera.position.y += (1 - scale) * dy;
-		camera.zoom *= scale;
-		cameraDirty = true;
 	}
 
 	public void pan(float dx, float dy) {
-
-		dx *= camera.zoom;
-		dy *= camera.zoom;
-
-		camera.position.x -= dx;
-		camera.position.y -= dy;
-		cameraDirty = true;
+		helper.pan(dx, dy);
 	}
 
 	@Override
 	protected void sizeChanged() {
 		super.sizeChanged();
-		cameraDirty = true;
+		helper.invalidateCamera();
 	}
 
 	@Override
 	protected void positionChanged() {
 		super.positionChanged();
-		cameraDirty = true;
+		helper.invalidateCamera();
 	}
 
 	@Override
@@ -118,16 +99,14 @@ public class SceneView extends Widget {
 
 		background.draw(batch, parentAlpha);
 
-		if (model == null || model.getScene() == null) {
-			return;
-		}
-
-		if (cameraDirty) {
-			updateCamera();
-			cameraDirty = false;
-		}
-
 		if (clipBegin()) {
+
+			helper.updateCamera();
+
+			if (model == null || model.getScene() == null) {
+				return;
+			}
+
 			drawWorld(batch);
 			drawUi(batch);
 			batch.flush();  // flush before we pop scissors
@@ -135,10 +114,11 @@ public class SceneView extends Widget {
 		}
 	}
 
+
 	private void drawWorld(Batch batch) {
 		savedMatrix.set(batch.getProjectionMatrix());
 
-		batch.setProjectionMatrix(camera.combined);
+		batch.setProjectionMatrix(helper.getCamera().combined);
 		batch.setColor(Color.WHITE);
 
 		for (Entity e : model.getScene().getObjects()) {
@@ -153,66 +133,11 @@ public class SceneView extends Widget {
 		Entity selected = model.selectedEntity.getValue();
 		if (selected != null) {
 			tmpVec2.set(selected.getTransform().getPosition());
-			worldToParentLocal(tmpVec2);  // ui is drawn in parents coords
+			helper.worldToParentLocal(tmpVec2);  // ui is drawn in parents coords
 			arrow.setOriginBasedPosition(tmpVec2.x, tmpVec2.y);
 			arrow.draw(batch);
 		}
 	}
 
-	private void localToWorld(Vector2 local) {
-		localToScreenCoordinates(local);
-		tmpVec3.set(local.x, local.y, 0);
-		camera.unproject(tmpVec3);
-		local.set(tmpVec3.x, tmpVec3.y);
-	}
-
-	private void worldToLocal(Vector2 world) {
-		worldToStage(world);
-		stageToLocalCoordinates(world);
-	}
-
-	private void worldToParentLocal(Vector2 world) {
-		worldToStage(world);
-		getParent().stageToLocalCoordinates(world);
-	}
-
-	private void worldToStage(Vector2 world) {
-		tmpVec3.set(world.x, world.y, 0);
-		camera.project(tmpVec3);
-		world.set(tmpVec3.x, tmpVec3.y);
-
-		// y' = worldToLocal(localToWorld(y))
-		// seems y' == y - 1, so
-		world.y += 1;
-	}
-
-	private void updateCamera() {
-		camera.viewportWidth = getWidth();
-		camera.viewportHeight = getHeight();
-		camera.update();
-
-		// hack camera.projection to make camera render on view rectangle instead of whole screen
-
-		float scaleX = getWidth() / Gdx.graphics.getWidth();
-		float scaleY = getHeight() / Gdx.graphics.getHeight();
-
-		float offsetLeft = getX();
-		float offsetRight = Gdx.graphics.getWidth() - getRight();
-		float cameraDx = (offsetLeft - offsetRight) / 2 * camera.zoom;
-
-		float offsetTop = Gdx.graphics.getHeight() - getTop();
-		float offsetBottom = getY();
-		float cameraDy = (offsetBottom - offsetTop) / 2 * camera.zoom;
-
-		camera.projection.scale(scaleX, scaleY, 1f);
-		camera.projection.translate(cameraDx, cameraDy, 0);
-
-		camera.combined.set(camera.projection);
-		Matrix4.mul(camera.combined.val, camera.view.val);
-
-		camera.invProjectionView.set(camera.combined);
-		Matrix4.inv(camera.invProjectionView.val);
-		camera.frustum.update(camera.invProjectionView);
-	}
 
 }
