@@ -40,13 +40,13 @@ public class CameraHelper {
 	}
 
 
-	public void zoom(float zoomPower, float x, float y) {
-		float dx = (x - actor.getWidth() / 2) * camera.zoom;
-		float dy = (y - actor.getHeight() / 2) * camera.zoom;
+	public void zoomTo(float zoom, float x, float y) {
+		float dx = (x - actor.getWidth() / 2);
+		float dy = (y - actor.getHeight() / 2);
 
-		camera.position.x += (1 - zoomPower) * dx;
-		camera.position.y += (1 - zoomPower) * dy;
-		camera.zoom *= zoomPower;
+		camera.position.x += (camera.zoom - zoom) * dx;
+		camera.position.y += (camera.zoom - zoom) * dy;
+		camera.zoom = zoom;
 		cameraDirty = true;
 	}
 

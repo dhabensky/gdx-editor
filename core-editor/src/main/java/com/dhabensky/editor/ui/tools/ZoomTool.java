@@ -1,7 +1,9 @@
-package com.dhabensky.editor.ui.editor;
+package com.dhabensky.editor.ui.tools;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.dhabensky.editor.ui.editor.SceneView;
 
 /**
  * @author dhabensky <d.khabensky@a1-systems.com>
@@ -9,7 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 public class ZoomTool extends InputListener {
 
 	private SceneView sceneView;
-	private float zoomPower = 1.25f;
+	private float     zoomPower = 1.25f;
+	private float     minZoom   = 1e-6f;
+	private float     maxZoom   = 1e+2f;
 
 	public void setSceneView(SceneView sceneView) {
 		this.sceneView = sceneView;
@@ -31,12 +35,20 @@ public class ZoomTool extends InputListener {
 			return false;
 		}
 
+		float newZoom;
 		if (amount > 0) {
-			sceneView.zoom(zoomPower, x, y);
+			newZoom = sceneView.getZoom() * zoomPower;
 		}
 		else if (amount < 0) {
-			sceneView.zoom(1f / zoomPower, x, y);
+			newZoom = sceneView.getZoom() / zoomPower;
 		}
+		else {
+			return false;
+		}
+
+		newZoom = MathUtils.clamp(newZoom, minZoom, maxZoom);
+
+		sceneView.zoomTo(newZoom, x, y);
 
 		return true;
 	}

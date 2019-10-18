@@ -10,6 +10,8 @@ import com.dhabensky.editor.EditorModel;
 import com.dhabensky.editor.Entity;
 import com.dhabensky.editor.Scene;
 import com.dhabensky.editor.ui.BaseScreen;
+import com.dhabensky.editor.ui.tools.PanTool;
+import com.dhabensky.editor.ui.tools.ZoomTool;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,8 @@
-package com.dhabensky.editor.ui.editor;
+package com.dhabensky.editor.ui.tools;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
+import com.dhabensky.editor.ui.editor.SceneView;
 
 /**
  * @author dhabensky <d.khabensky@a1-systems.com>

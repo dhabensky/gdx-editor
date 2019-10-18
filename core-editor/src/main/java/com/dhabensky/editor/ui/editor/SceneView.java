@@ -69,8 +69,13 @@ public class SceneView extends Widget {
 		return model;
 	}
 
-	public void zoom(float zoomPower, float x, float y) {
-		helper.zoom(zoomPower, x, y);
+	public void zoomTo(float zoom, float x, float y) {
+		helper.zoomTo(zoom, x, y);
+		System.out.println("zoom: " + helper.getCamera().zoom);
+	}
+
+	public float getZoom() {
+		return helper.getCamera().zoom;
 	}
 
 	public void pan(float dx, float dy) {

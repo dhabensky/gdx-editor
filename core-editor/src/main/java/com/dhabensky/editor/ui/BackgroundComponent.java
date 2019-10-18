@@ -1,4 +1,4 @@
-package com.dhabensky.editor.ui.components;
+package com.dhabensky.editor.ui;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
