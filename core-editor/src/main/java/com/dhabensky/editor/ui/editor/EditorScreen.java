@@ -1,6 +1,8 @@
 package com.dhabensky.editor.ui.editor;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
@@ -9,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.dhabensky.editor.EditorModel;
 import com.dhabensky.editor.Entity;
 import com.dhabensky.editor.Scene;
+import com.dhabensky.editor.TextureComponent;
 import com.dhabensky.editor.ui.BaseScreen;
 import com.dhabensky.editor.ui.tools.PanTool;
 import com.dhabensky.editor.ui.tools.ZoomTool;
@@ -95,11 +98,17 @@ public class EditorScreen extends BaseScreen {
 				-1,-2,
 				-2,1
 		};
+		TextureRegion region = new TextureRegion(new Texture("badlogic.jpg"));
 
 		List<Entity> entities = new ArrayList<>();
 		for (int i = 0; i < positions.length; ) {
 			Entity e = new Entity(UUID.randomUUID());
 			e.getTransform().setPosition(positions[i++], positions[i++]);
+
+			TextureComponent texture = new TextureComponent();
+			texture.setRegion(region);
+			e.addComponent(texture);
+
 			entities.add(e);
 		}
 

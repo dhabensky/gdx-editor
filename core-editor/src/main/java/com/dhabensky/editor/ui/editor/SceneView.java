@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.dhabensky.editor.EditorModel;
 import com.dhabensky.editor.Entity;
+import com.dhabensky.editor.TextureComponent;
 import com.dhabensky.editor.Transform;
 
 /**
@@ -121,7 +122,15 @@ public class SceneView extends Widget {
 
 		for (Entity e : model.getScene().getObjects()) {
 			Transform t = e.getTransform();
-			batch.draw(texture, t.getX(), t.getY(), 1, 1);
+			TextureComponent texture = e.getComponent(TextureComponent.class);
+			if (texture != null && texture.getRegion() != null) {
+				float w = texture.getWidth();
+				float h = texture.getHeight();
+				float anchorX = texture.getAnchorX();
+				float anchorY = texture.getAnchorY();
+				batch.draw(texture.getRegion(),
+						t.getX() - w * anchorX, t.getY() - h * anchorY, w, h);
+			}
 		}
 
 		batch.setProjectionMatrix(savedMatrix);
