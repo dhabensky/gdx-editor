@@ -69,4 +69,20 @@ public class TextureComponent implements Component {
 		anchor.y = anchorY;
 	}
 
+	public float getMinX() {
+		return size.x * (0 - anchor.x);
+	}
+
+	public float getMaxX() {
+		return size.x * (1 - anchor.x);
+	}
+
+	public float getMinY() {
+		return size.y * (0 - anchor.y);
+	}
+
+	public float getMaxY() {
+		return size.y * (1 - anchor.y);
+	}
+
 }

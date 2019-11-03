@@ -14,6 +14,7 @@ import com.dhabensky.editor.Scene;
 import com.dhabensky.editor.TextureComponent;
 import com.dhabensky.editor.ui.BaseScreen;
 import com.dhabensky.editor.ui.tools.PanTool;
+import com.dhabensky.editor.ui.tools.SelectTool;
 import com.dhabensky.editor.ui.tools.ZoomTool;
 
 import java.util.ArrayList;
@@ -38,12 +39,6 @@ public class EditorScreen extends BaseScreen {
 		createViews();
 		createModel();
 
-		ZoomTool zoomTool = new ZoomTool();
-		zoomTool.setSceneView(sceneView);
-
-		PanTool panTool = new PanTool();
-		panTool.setSceneView(sceneView);
-
 		sceneView.setSceneModel(model);
 		model.selectedEntity.observe(inspectorView);
 
@@ -54,8 +49,19 @@ public class EditorScreen extends BaseScreen {
 
 		Gdx.input.setInputProcessor(stage);
 
+
+		ZoomTool zoomTool = new ZoomTool();
+		zoomTool.setSceneView(sceneView);
+
+		PanTool panTool = new PanTool();
+		panTool.setSceneView(sceneView);
+
+		SelectTool selectTool = new SelectTool();
+		selectTool.setSceneView(sceneView);
+
 		sceneView.addListener(zoomTool);
 		sceneView.addListener(panTool);
+		sceneView.addListener(selectTool);
 	}
 
 	@Override

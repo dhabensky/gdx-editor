@@ -18,6 +18,8 @@ import com.dhabensky.editor.Entity;
 import com.dhabensky.editor.TextureComponent;
 import com.dhabensky.editor.Transform;
 
+import java.util.List;
+
 /**
  * @author dhabensky <d.khabensky@a1-systems.com>
  */
@@ -30,7 +32,6 @@ public class SceneView extends Widget {
 	private Vector2 tmpVec2     = new Vector2();
 
 	private TextureRegion gridTexture;
-	private Texture       texture;
 	private Sprite        arrow;
 
 
@@ -44,7 +45,6 @@ public class SceneView extends Widget {
 		float pixelsPerUnit = 100;
 		camera.zoom = 1f / pixelsPerUnit;
 
-		texture = new Texture("badlogic.jpg");
 		gridTexture = skin.getRegion("white");
 
 		arrow = new Sprite(new Texture("axis-arrows.png"));
@@ -81,6 +81,29 @@ public class SceneView extends Widget {
 
 	public void pan(float dx, float dy) {
 		helper.pan(dx, dy);
+	}
+
+	public Entity hitEntity(float x, float y) {
+		tmpVec2.set(x, y);
+		helper.localToWorld(tmpVec2);
+
+		List<Entity> entities = getSceneModel().getScene().getObjects();
+		for (Entity e : entities) {
+			TextureComponent tex = e.getComponent(TextureComponent.class);
+			if (tex != null) {
+				Transform t = e.getTransform();
+				float localX = tmpVec2.x - t.getX();
+				float localY = tmpVec2.y - t.getY();
+
+				if (localX >= tex.getMinX() && localX < tex.getMaxX() &&
+				    localY >= tex.getMinY() && localY < tex.getMaxY()) {
+
+					return e;
+				}
+			}
+		}
+
+		return null;
 	}
 
 	@Override

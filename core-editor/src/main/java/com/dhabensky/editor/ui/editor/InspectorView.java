@@ -2,7 +2,6 @@ package com.dhabensky.editor.ui.editor;
 
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.dhabensky.editor.Entity;
-import com.dhabensky.editor.ui.view.TransformView;
 import com.dhabensky.editor.util.Observer;
 
 /**
